@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "Printing to stdout"
+title:  "Adventures with stdout"
 date:   2018-08-30 21:55:00 -0400
 ---
 
