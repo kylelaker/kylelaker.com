@@ -1,10 +1,8 @@
 ---
 layout: single
-title:  "Adventures with stdout"
-date:   2018-08-30 21:55:00 -0400
+title:  CDC Linux Intro
+date:   2018-09-21 15:30:00 -0400
 ---
-
-# CDC Linux Intro
 
 When it comes to competitions, several of the machines the team will be
 responsible for will running Linux. Often it's older versions of common of
