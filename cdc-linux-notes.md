@@ -28,6 +28,9 @@ machine.
  1. `kill` - Kill a process `kill -9 $PID`
  1. `who` - Show who is signed in
  1. `echo` - Print to `stdout` -- `echo 'This a test'`
+ 1. `lsof` - See all open file descriptors
+ 1. `tail -f` - Watch the end of a file
+ 1. `watch` - Run a command at specified intervals
 
 ## Identifying your box
 
@@ -75,4 +78,4 @@ a competition. Here's a few really nasty ways an attacker could mess with you.
  - [linuxjourney.com](https://linuxjourney.com) (External link)
  - JMU Unix Users Group
  - `--help` flag to commands
-
+ - `apropos` to search for commands
