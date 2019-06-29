@@ -30,10 +30,10 @@ plugins:
 
 
 # Minimal Mistakes settings
-minimal_mistakes_skin: "dirt"
+minimal_mistakes_skin: "air"
 author:
   name: "Kyle Laker"
-  bio: "Computer science student at James Madison University"
+  bio: "Fan of Linux, Rust, Python, and the cloud"
   avatar: "assets/image/kylelaker.jpg"
   email: "kyle@laker.email"
   uri: "https://kylelaker.com"
