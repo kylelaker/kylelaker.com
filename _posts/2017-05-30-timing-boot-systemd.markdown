@@ -64,10 +64,11 @@ HOOKS="systemd autodetect modconf block filesystems"
 While I was there, I also switched the compression algorithm to LZ4.Then I ran
 
 ```
-# mkinitcpio -p linux and rebooted. And I had kernel, initrd, and user sections
+# mkinitcpio -p linux
 ```
 
-in my systemd-analyze output. I really wanted to go further, though.
+and rebooted. And I had kernel, initrd, and user sections in my systemd-analyze
+output. I really wanted to go further, though.
 
 ## systemd-boot
 
