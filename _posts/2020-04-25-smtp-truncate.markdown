@@ -20,7 +20,7 @@ feature: a string truncation service.
 
 One of the features of the MC3224dwe is the ability to scan to email. The
 manual for the printer has very helpful
-[instructions](https://publications.lexmark.com/publications/lexmark_hardware/CX331_MC3224_MC3326/UG/html/en/index.html)
+[instructions](https://publications.lexmark.com/publications/lexmark_hardware/CX331_MC3224_MC3326/UG/html/en/configuring-smtp-server-e-mail-topic.html#configuring-smtp-server-e-mail)
 for configuring the SMTP settings on the device:
 
 > From the E-mail Setup section, configure the settings
