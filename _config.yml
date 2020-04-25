@@ -14,6 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Kyle Laker
+name: Kyle Laker
 email: kyle@laker.email
 description: "" # this means to ignore newlines until "baseurl:"
 baseurl: "/" # the subpath of your site, e.g. /blog
@@ -22,42 +23,26 @@ repository: "kylelaker/jekyll-site"
 twitter_username: kyle_laker
 github_username:  kylelaker
 
+show_excerpts: true
+
+#author:
+#  name: Kyle Laker
+#  email: kyle@laker.email
+
 # Build settings
 markdown: kramdown
-theme: minimal-mistakes-jekyll
+theme: minima
 plugins:
   - jekyll-feed
 
+minima:
+  social_links:
+    twitter: kyle_laker
+    github: kylelaker
+    linkedin: kyle-laker-0339b346
 
-# Minimal Mistakes settings
-minimal_mistakes_skin: "air"
-author:
-  name: "Kyle Laker"
-  bio: "Fan of Linux, Rust, Python, and the cloud"
-  avatar: "assets/image/kylelaker.jpg"
-  email: "kyle@laker.email"
-  uri: "https://kylelaker.com"
-  github: "kylelaker"
-  twitter: "kyle_laker"
-  linkedin: "kyle-laker-0339b346"
-og_image: "/assets/image/site-logo.png"
-twitter:
-  username: "kyle_laker"
-github:
-  username: "kylelaker"
-paginate: 5
-defaults:
-  # _posts
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      read_time: false
-      comments: false
-      share: true
-      related: true
+header_pages:
+  - projects.md
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

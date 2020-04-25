@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: post
 title:  "Timing Boot with systemd"
 date:   2017-05-30 00:00:00 -0400
 ---

@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: page
 title:  CDC Linux Intro
 date:   2018-09-21 15:30:00 -0400
 ---
