@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        {%- if site.nav_logo -%}
+        <img src="{{ site.logo | relative_url}}" width="30" height="30" alt="{{ site.title }}">
+        {%- else -%}
+        {{ site.title }}
+        {%- endif -%}
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        {% for item in site.data.navbar %}
+        <a class="nav-item nav-link" href="{{item.link}}">{{ item.name }}</a>
+        {% endfor %}  
+      </div>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      {% if site.email %}
+      <li><a href="mailto:{{ site.email }}" class="nav-item nav-link"><i class="fal fa-envelope"></i></a></li>
+      {% endif %}
+      {% if site.twitter %}
+      <li><a href="https://twitter.com/{{ site.twitter.username }}" class="nav-item nav-link"><i class="fab fa-twitter"></i></a></li>
+      {% endif %}
+      {% if site.github %}
+      <li><a href="https://github.com/{{ site.github }}" class="nav-item nav-link"><i class="fab fa-github"></i></a></li>
+      {% endif %}
+      {% if site.linkedin %}
+      <li><a href="https://linkedin.com/in/{{ site.linkedin }}" class="nav-item nav-link"><i class="fab fa-linkedin-in"></i></a></li>
+      {% endif %}
+    </ul>
+</nav>

@@ -76,6 +76,6 @@ a competition. Here's a few really nasty ways an attacker could mess with you.
 
  - `man` -- try `man man`
  - [linuxjourney.com](https://linuxjourney.com) (External link)
- - JMU Unix Users Group
+ - [JMU Unix Users Group](https://www.jmunixusers.org)
  - `--help` flag to commands
  - `apropos` to search for commands
