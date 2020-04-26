@@ -23,7 +23,8 @@ manual for the printer has very helpful
 [instructions](https://publications.lexmark.com/publications/lexmark_hardware/CX331_MC3224_MC3326/UG/html/en/configuring-smtp-server-e-mail-topic.html#configuring-smtp-server-e-mail)
 for configuring the SMTP settings on the device:
 
-> From the E-mail Setup section, configure the settings
+{:.blockquote}
+> From the E-mail Setup section, configure the settings.
 
 When setting this up, I decided that since the printer is shared by myself
 and roommates, the best thing to do would probably be to not have the emails
@@ -263,7 +264,7 @@ The "Device Userid" needs to be specified, but it can be any value. Our server
 completely ignores it. The "Device Password' is the field that gets truncated,
 so put you're string there and hit "Save".
 
-![Printer settings screenshot](/assets/image/lexmark-email-settings.png)
+![Printer settings screenshot](/assets/image/lexmark-email-settings.png){: width="80%"}
 
 On the printer (or using the remote operator panel), go to "E-mail", tap the
 "To:" field and enter any email addres. Press "Add" and "Done". Now you're ready

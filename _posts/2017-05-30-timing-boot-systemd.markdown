@@ -4,11 +4,6 @@ title:  "Timing Boot with systemd"
 date:   2017-05-30 00:00:00 -0400
 ---
 
-> Warning! This is a documentation of my experience, not a walkthrough. The
-> steps listed here may not work for you and your system is probably configured
-> differently. If you want to make the same changes, read the relevant wiki
-> page.
-
 Being an Arch Linux user pretty much means that for better for worse, I am
 stuck using systemd as my init system, whether I like it or not. And in
 general, it seems that Arch is all aboard the systemd train. Generally new
@@ -16,6 +11,13 @@ versions hit the official repos relatively quickly (still waiting for 233,
 though), and the wiki has a ton of great systemd resources. systemd-nspawn is
 the preferred way to launch a container. In general, it feels like any problem
 you mention, the solution is given with systemd.
+
+<div class="alert alert-warning" role="alert">
+Warning! This is a documentation of my experience, not a walkthrough. The
+steps listed here may not work for you and your system is probably configured
+differently. If you want to make the same changes, read the relevant wiki
+page.
+</div>
 
 ## mkinitcpio hooks
 
