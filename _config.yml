@@ -11,6 +11,8 @@ twitter:
 github: kylelaker
 linkedin: kyle-laker-0339b346
 
+paginate: 5
+
 sass:
   sass_dir: assets/css
 
@@ -18,3 +20,4 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-autoprefixer
+  - jekyll-paginate
