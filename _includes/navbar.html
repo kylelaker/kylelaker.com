@@ -10,24 +10,24 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
+      <div class="navbar-nav mr-auto">
         {%- for item in site.data.navbar -%}
         <a class="nav-item nav-link {% if page.url == item.link %}active{% endif %}" href="{{item.link}}">{{ item.name }}</a>
         {% endfor %}  
       </div>
+      <ul class="nav navbar-nav navbar-right">
+        {% if site.email -%}
+        <li><a href="mailto:{{ site.email }}" class="nav-item nav-link"><i class="fal fa-envelope"></i></a></li>
+        {% endif -%}
+        {%- if site.twitter -%}
+        <li><a href="https://twitter.com/{{ site.twitter.username }}" class="nav-item nav-link"><i class="fab fa-twitter"></i></a></li>
+        {% endif -%}
+        {%- if site.github -%}
+        <li><a href="https://github.com/{{ site.github }}" class="nav-item nav-link"><i class="fab fa-github"></i></a></li>
+        {% endif -%}
+        {%- if site.linkedin -%}
+        <li><a href="https://linkedin.com/in/{{ site.linkedin }}" class="nav-item nav-link"><i class="fab fa-linkedin-in"></i></a></li>
+        {%- endif %}
+      </ul>
     </div>
-    <ul class="nav navbar-nav navbar-right">
-      {% if site.email -%}
-      <li><a href="mailto:{{ site.email }}" class="nav-item nav-link"><i class="fal fa-envelope"></i></a></li>
-      {% endif -%}
-      {%- if site.twitter -%}
-      <li><a href="https://twitter.com/{{ site.twitter.username }}" class="nav-item nav-link"><i class="fab fa-twitter"></i></a></li>
-      {% endif -%}
-      {%- if site.github -%}
-      <li><a href="https://github.com/{{ site.github }}" class="nav-item nav-link"><i class="fab fa-github"></i></a></li>
-      {% endif -%}
-      {%- if site.linkedin -%}
-      <li><a href="https://linkedin.com/in/{{ site.linkedin }}" class="nav-item nav-link"><i class="fab fa-linkedin-in"></i></a></li>
-      {%- endif %}
-    </ul>
 </nav>
