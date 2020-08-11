@@ -1,0 +1,34 @@
+---
+layout: page
+title: Mocking Text Generator
+---
+
+<p>
+  EnTeR yOuR tExT bElOw To TuRn It InTo ThIs.
+</p>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Text to mock" aria-label="Text to mock" aria-describedby="button-mock" id="input-mock">
+  <div class="input-group-append">
+    <button class="btn btn-primary" type="button" id="button-mock">Mock</button>
+  </div>
+</div>
+<div id="mocked-output" style="visibility: hidden;">
+  <p id="mocked-text">Foo</p>
+</div>
+
+<script src="/assets/js/mock.js"></script>
+<script>
+  let mockButton = document.getElementById('button-mock');
+  let inputBox = document.getElementById('input-mock');
+  let outputDiv = document.getElementById('mocked-output');
+  let outputText = document.getElementById('mocked-text');
+
+  mockButton.onclick = function() {
+    let result = mockifyString(inputBox.value);
+    outputText.innerHTML = result;
+    // Prevent the <div> from being visible on first click if no text was given
+    if (result) {
+      outputDiv.style.visibility = 'visible';
+    }
+  }
+</script>
