@@ -2,13 +2,17 @@
 layout: default
 title: Resume
 permalink: /resume/
-custom_styles: ["assets/css/resume.css"]
+custom_styles: ["/assets/css/resume.css"]
 ---
 
 <div>
     <div class="resume-top-header">
         <h1><span class="d-none d-print-inline">Kyle Laker</span><span class="d-inline d-print-none">Resume</span></h1>
         <div class="d-none d-print-inline">
+            <!--
+                The below don't really need to be <a> tags since the goal is that they just get printed, where
+                the raw text is likely better anyway.
+            -->
             <p>resume@laker.email</p>
             <p>https://kylelaker.com/resume/</p>
             <p>https://github.com/kylelaker/</p>
@@ -28,7 +32,8 @@ custom_styles: ["assets/css/resume.css"]
             <ul class="job-desc">
                 <li>Build and automate cloud environments meeting FedRAMP and FISMA high requirements</li>
                 <li>Maintain and operate Windows and Linux servers in EC2</li>
-                <li>Build and manage hybrid network architecture</li>
+                <li>Build and manage hybrid network infrastructure</li>
+                <li>Deliver automation through serverless functions</li>
                 <li>Write software to run CloudFormation and Python with automated dependency management</li>
             </ul>
         </div>
