@@ -1,6 +1,9 @@
 /* RESUME */
 
 @media print {
+    @page {
+        margin: 1in 1in 1in 1in;
+    }
     .resume-top-header {
         text-align: center;
     }
