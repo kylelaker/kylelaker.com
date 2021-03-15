@@ -16,6 +16,9 @@ paginate: 5
 sass:
   sass_dir: assets/css
 
+include:
+  - "kylelaker.asc"
+
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
