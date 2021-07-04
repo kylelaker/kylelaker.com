@@ -3,28 +3,33 @@
     "version": "1.0.0",
     "description": "Infrastructure for an HTTPS static site using S3 and CloudFront",
     "scripts": {
-      "build": "tsc",
-      "watch": "tsc -w",
-      "cdk": "cdk"
+        "build": "tsc",
+        "watch": "tsc -w",
+        "cdk": "cdk"
     },
     "author": {
-      "name": "Amazon Web Services",
-      "url": "https://aws.amazon.com",
-      "organization": true
+        "name": "Amazon Web Services",
+        "url": "https://aws.amazon.com",
+        "organization": true
     },
     "license": "Apache-2.0",
     "devDependencies": {
-      "@types/node": "^10.17.0",
-      "typescript": "^3.8"
+        "@types/node": "^10.17.0",
+        "@typescript-eslint/eslint-plugin": "^4.28.1",
+        "@typescript-eslint/parser": "^4.28.1",
+        "eslint": "^7.30.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.23.4",
+        "typescript": "^3.8"
     },
     "dependencies": {
-      "@aws-cdk/aws-certificatemanager": "*",
-      "@aws-cdk/aws-cloudfront": "*",
-      "@aws-cdk/aws-iam": "*",
-      "@aws-cdk/aws-route53": "*",
-      "@aws-cdk/aws-route53-targets": "*",
-      "@aws-cdk/aws-s3": "*",
-      "@aws-cdk/core": "*",
-      "aws-cdk": "*"
+        "@aws-cdk/aws-certificatemanager": "*",
+        "@aws-cdk/aws-cloudfront": "*",
+        "@aws-cdk/aws-iam": "*",
+        "@aws-cdk/aws-route53": "*",
+        "@aws-cdk/aws-route53-targets": "*",
+        "@aws-cdk/aws-s3": "*",
+        "@aws-cdk/core": "*",
+        "aws-cdk": "*"
     }
-  }
+}
