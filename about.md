@@ -2,7 +2,6 @@
 layout: about
 avatar: /assets/image/kylelaker.jpg
 title: About
-permalink: /about/
 ---
 
 I am a DevOps Engineer at Easy Dynamics Corp. My work primarily focuses on migrating government systems to Amazon Web Services. Building automation tools in Python, Java, or Go is a common task. My work covers an array of AWS services including CloudFormation, IAM, Config, Lambda, Systems Manager, and of course EC2 and VPC.
