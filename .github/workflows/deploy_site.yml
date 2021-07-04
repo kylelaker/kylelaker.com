@@ -28,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_site
     steps:
+      - run: echo ::add-mask::${{ secrets.AWS_ACCOUNT_ID }}
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
