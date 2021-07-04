@@ -17,7 +17,7 @@ jobs:
           ruby-version: 3.0
           bundler-cache: true
       - name: Run build
-        run: jekyll build
+        run: bundler exec jekyll build
       - name: Archive artifiacts
         uses: actions/upload-artifact@v2
         with:
