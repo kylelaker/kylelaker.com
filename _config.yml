@@ -18,6 +18,8 @@ sass:
 
 include:
   - "kylelaker.asc"
+exclude:
+  - "cdk"
 
 plugins:
   - jekyll-sitemap
