@@ -98,5 +98,10 @@ export class StaticSite extends Construct {
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
       zone,
     });
+    new route53.AaaaRecord(this, 'SiteAliasAaaaRecord', {
+      recordName: siteDomain,
+      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
+      zone,
+    });
   }
 }
