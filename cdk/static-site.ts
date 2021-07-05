@@ -11,6 +11,10 @@ export interface StaticSiteProps {
     domainName: string;
 }
 
+function aliasResourceName(alias: string): string {
+  return alias.replace(/\.([a-z])/g, (_match: string, p1: string): string => p1.toUpperCase());
+}
+
 /**
  * Static site infrastructure, which deploys site content to an S3 bucket.
  *
@@ -23,6 +27,7 @@ export class StaticSite extends Construct {
 
     const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
     const siteDomain = props.domainName;
+    const aliases = [`www.${siteDomain}`];
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI', {
       comment: `OAI for ${name}`,
     });
@@ -53,6 +58,7 @@ export class StaticSite extends Construct {
     const { certificateArn } = new acm.DnsValidatedCertificate(this, 'SiteCertificate', {
       domainName: siteDomain,
       hostedZone: zone,
+      subjectAlternativeNames: aliases,
       region: 'us-east-1', // Cloudfront only checks this region for certificates.
     });
     new cdk.CfnOutput(this, 'Certificate', { value: certificateArn });
@@ -70,7 +76,7 @@ export class StaticSite extends Construct {
     {
       sslMethod: cloudfront.SSLMethod.SNI,
       securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2019,
-      aliases: [siteDomain],
+      aliases: [siteDomain, ...aliases],
     });
 
     // CloudFront distribution
@@ -92,16 +98,19 @@ export class StaticSite extends Construct {
     });
     new cdk.CfnOutput(this, 'DistributionId', { value: distribution.distributionId });
 
-    // Route53 alias record for the CloudFront distribution
-    new route53.ARecord(this, 'SiteAliasRecord', {
-      recordName: siteDomain,
-      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
-      zone,
-    });
-    new route53.AaaaRecord(this, 'SiteAliasAaaaRecord', {
-      recordName: siteDomain,
-      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
-      zone,
+    const recordTarget = route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution));
+    [siteDomain, ...aliases].forEach((alias) => {
+      const aliasResourceSuffix = aliasResourceName(alias);
+      new route53.ARecord(this, `AliasRecord${aliasResourceSuffix}`, {
+        recordName: alias,
+        target: recordTarget,
+        zone,
+      });
+      new route53.AaaaRecord(this, `AaaaliasRecord${aliasResourceSuffix}`, {
+        recordName: alias,
+        target: recordTarget,
+        zone,
+      });
     });
   }
 }
