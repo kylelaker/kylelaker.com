@@ -11,6 +11,10 @@ gem "jekyll"
 # https://talk.jekyllrb.com/t/jekyll-serve-fails-with-trace-mentioning-execjs/6145
 gem 'execjs', '<2.8.0'
 
+# Required for `jekyll serve` in Ruby >=3.0
+# https://github.com/github/pages-gem/issues/752
+gem 'webrick'
+
 group :jekyll_plugins do
     gem 'jekyll-sitemap'
     gem 'jekyll-seo-tag'
