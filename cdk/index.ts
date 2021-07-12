@@ -14,6 +14,7 @@ class StaticSiteStack extends cdk.Stack {
 
     new StaticSite(this, 'StaticSite', {
       domainName: this.node.tryGetContext('domain'),
+      distributionLogicalId: this.node.tryGetContext('distributionLogicalId'),
     });
   }
 }
