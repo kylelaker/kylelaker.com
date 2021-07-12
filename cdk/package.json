@@ -1,5 +1,5 @@
 {
-    "name": "static-site",
+    "name": "kylelaker-site",
     "version": "1.0.0",
     "description": "Infrastructure for an HTTPS static site using S3 and CloudFront",
     "scripts": {
@@ -8,8 +8,8 @@
         "cdk": "cdk"
     },
     "author": {
-        "name": "Amazon Web Services",
-        "url": "https://aws.amazon.com",
+        "name": "Kyle Laker",
+        "url": "https://kylelaker.com",
         "organization": true
     },
     "license": "Apache-2.0",
