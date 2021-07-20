@@ -1,0 +1,14 @@
+---
+layout: none
+---
+
+User-agent: *
+# No need to have this crawled; it is purely kept for historical/legacy reasons
+Disallow: /cdc-linux-notes.html
+# Crawling my PGP key probably isn't particularly useful
+Disallow: /kylelaker.asc
+# And while this page is fun, it probably isn't especially useful to be crawled either
+Disallow: /mock-text.html
+
+# Specify the sitemap URL
+Sitemap: {{ "sitemap.xml" | absolute_url }}
