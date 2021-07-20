@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{{ style | relative_url }}">
     {% endfor -%}
     {% seo %}
+    {%- if jekyll.environment == "production" -%}
+    {% include analytics.html %}
+    {%- endif %}
   </head>
   <body>
     {% include navbar.html %}

@@ -4,12 +4,15 @@ email: "contact@laker.email"
 author: Kyle Laker
 logo: assets/image/site-logo.png
 nav_logo: false
+timezone: America/New_York
 
 twitter:
   username: kyle_laker
   card: summary
 github: kylelaker
 linkedin: kyle-laker-0339b346
+
+google_analytics: G-2P6678NNJQ
 
 paginate: 5
 

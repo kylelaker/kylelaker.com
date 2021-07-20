@@ -10,6 +10,8 @@ jobs:
   build_site:
     name: Build the static site
     runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
