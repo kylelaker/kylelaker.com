@@ -4,7 +4,7 @@ email: "contact@laker.email"
 author: Kyle Laker
 logo: assets/image/site-logo.png
 nav_logo: false
-timezone: America/New_York
+# timezone: America/New_York
 
 twitter:
   username: kyle_laker
