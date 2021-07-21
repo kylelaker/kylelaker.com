@@ -21,3 +21,6 @@ group :jekyll_plugins do
     gem 'jekyll-autoprefixer'
     gem 'jekyll-paginate'
 end
+
+
+gem "rouge", "~> 3.26"

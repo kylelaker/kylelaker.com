@@ -78,6 +78,7 @@ DEPENDENCIES
   jekyll-paginate
   jekyll-seo-tag
   jekyll-sitemap
+  rouge (~> 3.26)
   webrick
 
 BUNDLED WITH

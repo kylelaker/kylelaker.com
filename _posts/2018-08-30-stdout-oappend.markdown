@@ -46,12 +46,12 @@ compiling the project, I decided to play around with it and try to actually
 use it. I realized that every once in awhile, it would hit the following if-
 statement.
 
-{% highlight c %}
+```c
 if (stdout_append()) {
     fprintf(stderr, "Unable to append to files.\n");
     return EXIT_FAILURE;
 }
-{% endhighlight %}
+```
 
 `stdout_append()` here does about what you'd expect: it uses `fcntl(2)` to
 check the flags on `STDOUT_FILENO` and performs a bitwise `and` operation to
@@ -90,14 +90,14 @@ Luckily, `unistd.h` includes `isatty(3)` which can test whether or not a
 particular file descriptor refers to a terminal. In these cases, it is safe to
 remove the `O_APPEND` flag. Doing this is just as easy as setting it:
 
-{% highlight c %}
+```c
 void remove_append(int fd) {
     int flags = fcntl(fd, F_GETFL);
     if (isatty(fd) && flags >= 0) {
         fcntl(fd, F_SETFL, flags ^ O_APPEND);
     }
 }
-{% endhighlight %}
+```
 
 Rather than using `|`, we just use `^`.
 

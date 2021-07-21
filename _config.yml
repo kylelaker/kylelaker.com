@@ -14,10 +14,23 @@ linkedin: kyle-laker-0339b346
 
 google_analytics: G-2P6678NNJQ
 
+bootstrap:
+  version: "4.6.0"
+  css_hash: "sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+  js_hash: "sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+
+jquery:
+  version: "3.5.1"
+  hash: "sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+
 paginate: 5
 
-sass:
-  sass_dir: assets/css
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    span:
+      disable: true
 
 include:
   - "kylelaker.asc"

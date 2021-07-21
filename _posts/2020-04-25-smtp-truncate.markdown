@@ -48,12 +48,12 @@ been 69 characters but I haven't seen this documented.
 To verify that this would be an issue, I fired up my Python interpreter and
 ran a few quick tests.
 
-{% highlight python %}
+```python
 >>> 69 > 31
 True
 >>> 44 > 31
 True
-{% endhighlight %}
+```
 
 To follow along with building our new string truncation service, you'll need
 - A Lexmark MC3224dwe (or any of their other broken models, which may be all of them)
@@ -72,8 +72,7 @@ try to `AUTH LOGIN` (even if you tell it you only support `PLAIN`). At the end
 it will send a `QUIT` message. The functions to handle these functions will be
 registered using a simple decorator:
 
-{% highlight python %}
-
+```python
 handlers = {}
 
 def register_handler(name):
@@ -83,7 +82,7 @@ def register_handler(name):
             return func(*args, **kwargs)
         return wrapped
     return decorated
-{% endhighlight %}
+```
 
 All of our handlers will be decorated with this, and they'll pass the SMTP
 command that they handle. Each will accept 3 arguments, the `StreamReader` and
@@ -93,17 +92,17 @@ connection should continue and `False` if it shouldn't.
 
 The easiest of the commands to implement is `QUIT`. It just returns `False`.
 
-{% highlight python %}
+```python
 @register_handler('QUIT')
 async def handle_quit(reader, writer, args):
     return False
-{% endhighlight %}
+```
 
 Our `EHLO` handler is extremely simple. It basically just needs to tell the
 client that `AUTH LOGIN PLAIN` is a support extension. We will not implement
 support for `HELO` since that'd be useless (we wouldn't get a string to truncate).
 
-{% highlight python %}
+```python
 @register_handler('EHLO')
 async def handle_ehlo(reader, writer, args):
     message = [
@@ -114,7 +113,7 @@ async def handle_ehlo(reader, writer, args):
     writer.writelines(message)
     await writer.drain()
     return True
-{% endhighlight %}
+```
 
 The `AUTH` method can be either `PLAIN` or `LOGIN`. If the Lexmark printer does
 a `PLAIN` auth, it will pass the credentials as an argument; however, support for
@@ -129,7 +128,7 @@ found, it prints it out. It always pretends that the password invalid because we
 really don't want the printer to try and send an email since that's not supported
 (because again, we're writing a really terrible SMTP server).
 
-{% highlight python %}
+```python
 import base64
 
 @register_handler('AUTH')
@@ -170,14 +169,14 @@ async def handle_auth(reader, writer, args):
     await writer.drain()
 
     return True
-{% endhighlight %}
+```
 
 Next, we'll want a function to parse the commands the client sends and dispatch
 them to the handlers. It'll accept the reader and writer that we got from the
 `asyncio` server and like the other handlers, it'll return whether or not the
 connection should stay open.
 
-{% highlight python %}
+```python
 async def handle_command(reader, writer):
     data = await reader.readline()
     message = data.decode()
@@ -192,13 +191,13 @@ async def handle_command(reader, writer):
         writer.write(f'500 Error: command "{command}" not recognized\n'.encode())
         await writer.drain()
     return True
-{% endhighlight %}
+```
 
 A function to open the connection and run our command handler in a loop will be
 useful. The function will also handle closing the connection once
 `handle_command` has returned `False`.
 
-{% highlight python %}
+```python
 async def handle_connection(reader, writer):
     writer.write('220 String truncation service\n'.encode())
     await writer.drain()
@@ -206,12 +205,12 @@ async def handle_connection(reader, writer):
         pass
     
     writer.close()
-{% endhighlight %}
+```
 
 Finally, we'll want a function that will start our server as well as a `main`
 function with `click` decorators to support various CLI arguments.
 
-{% highlight python %}
+```python
 import asyncio
 import click
 
@@ -239,7 +238,7 @@ def main(host, port):
 
 if __name__ == '__main__':
     main()
-{% endhighlight %}
+```
 
 So once you
 [put it together](https://gist.github.com/kylelaker/336c05e3b0f2f89f915a73e6803aebe6)

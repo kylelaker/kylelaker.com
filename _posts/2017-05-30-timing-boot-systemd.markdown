@@ -52,14 +52,13 @@ mkinitcpio configs or the kernel.
 
 I then went into `/etc/mkinitcpio.conf` and was able to slim
 
-```
-HOOKS="base udev autodetect modconf block filesystems keyboard consolefont
-fsck"
+```bash
+HOOKS="base udev autodetect modconf block filesystems keyboard consolefont fsck"
 ```
 
 All the way down to
 
-```
+```bash
 HOOKS="systemd autodetect modconf block filesystems"
 ```
 
@@ -98,6 +97,5 @@ After a reboot, my system came up happily. Now I have all the information from
 `systemd-analyze` that I could ever want.
 
 ```
-Startup finished in 4.322s (firmware) + 57ms (loader) + 995ms (kernel) + 875ms
-(initrd) + 1.802s (userspace) = 8.053s
+Startup finished in 4.322s (firmware) + 57ms (loader) + 995ms (kernel) + 875ms (initrd) + 1.802s (userspace) = 8.053s
 ```
