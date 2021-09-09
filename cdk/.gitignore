@@ -3,3 +3,6 @@ cdk.out/
 *.js
 cdk.context.json
 .eslintrc.json
+
+# Specific files actually written in JS
+!rewrite-request.js

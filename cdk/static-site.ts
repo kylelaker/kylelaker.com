@@ -78,7 +78,7 @@ export class StaticSite extends Construct {
       defaultRootObject: 'index.html',
       domainNames: [siteDomain, ...aliases],
       certificate: acmCertificate,
-      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2019,
+      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
     });
     // This is going to need to be a wonky bit of code that exists, possibly forever,
