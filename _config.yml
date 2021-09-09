@@ -38,5 +38,5 @@ exclude:
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
-  - jekyll-autoprefixer
+  - jekyll-feed
   - jekyll-paginate
