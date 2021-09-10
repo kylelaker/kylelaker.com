@@ -44,7 +44,7 @@ function buildContentSecurityPolicy(): string {
             name: 'script-src',
             values: [
                 specialWord("self"),
-                specialWord("unsafe-inline"),
+                specialWord("unsafe-inline"), // required for Font Awesome
                 jsdelivr,
                 fontawesome,
             ],
@@ -53,6 +53,7 @@ function buildContentSecurityPolicy(): string {
             name: 'style-src',
             values: [
                 specialWord("self"),
+                specialWord("unsafe-inline"), // required for Font Awesome
                 jsdelivr,
                 fontawesome,
             ],
