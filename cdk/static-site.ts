@@ -48,9 +48,13 @@ export class StaticSite extends Construct {
     });
     new cdk.CfnOutput(this, 'Certificate', { value: acmCertificate.certificateArn });
 
-    const rewriteFunction = new cloudfront.Function(this, 'RewriteFunction', {
-      code: cloudfront.FunctionCode.fromFile({ filePath: 'rewrite-request.js' }),
+    const viewerRequestFunction = new cloudfront.Function(this, 'ViewerRequestFunction', {
+      code: cloudfront.FunctionCode.fromFile({ filePath: 'cf-functions/viewer-request.js' }),
     });
+
+    const viewerResponseFunction = new cloudfront.Function(this, "ViewerResponseFunction", {
+      code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/viewer-response.js" })
+    })
 
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'Distribution', {
@@ -59,9 +63,13 @@ export class StaticSite extends Construct {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         functionAssociations: [
           {
-            function: rewriteFunction,
+            function: viewerRequestFunction,
             eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
           },
+          {
+            function: viewerResponseFunction,
+            eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
+          }
         ],
       },
       errorResponses: [

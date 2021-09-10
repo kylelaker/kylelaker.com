@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Infrastructure for an HTTPS static site using S3 and CloudFront",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && tsc -p cf-functions",
         "watch": "tsc -w",
         "cdk": "cdk"
     },
@@ -17,6 +17,7 @@
         "@types/node": "^16.9.0",
         "@typescript-eslint/eslint-plugin": "^4.31.0",
         "@typescript-eslint/parser": "^4.31.0",
+        "@types/aws-cloudfront-function": "^1.0.1",
         "eslint": "^7.32.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-plugin-import": "^2.24.2",
