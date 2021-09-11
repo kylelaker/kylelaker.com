@@ -93,5 +93,9 @@ function addSecurity(response: AWSCloudFrontFunction.Response): void {
     addHeader(response, 'Content-Security-Policy', buildContentSecurityPolicy());
     addHeader(response, "X-Content-Type-Options", "nosniff");
     addHeader(response, "X-Frame-Options", "DENY");
-    addHeader(response, "X-XSS-Protection", "1; mode=block")
+    addHeader(response, "X-XSS-Protection", "1; mode=block");
+    addHeader(response, "Referrer-Policy", "strict-origin-when-cross-origin");
+    addHeader(response, "Cross-Origin-Embedder-Policy", 'require-corp; report-to"=default"');
+    addHeader(response, "Cross-Origin-Opener-Policy", "same-origin; report-to=\"default\"");
+    addHeader(response, "Cross-Origin-Resource-Policy", "same-origin");
 }
