@@ -24,11 +24,16 @@ function aliasResourceName(alias: string): string {
  * Route53 alias record, and ACM certificate.
  */
 export class StaticSite extends Construct {
+  public readonly domainName: string;
+  public readonly siteBucket: s3.IBucket;
+  public readonly distribution: cloudfront.IDistribution;
+
   constructor(parent: Stack, name: string, props: StaticSiteProps) {
     super(parent, name);
 
     const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
     const siteDomain = props.domainName;
+    this.domainName = siteDomain;
     const aliases = [`www.${siteDomain}`];
     new cdk.CfnOutput(this, 'Site', { value: `https://${siteDomain}` });
 
@@ -38,6 +43,7 @@ export class StaticSite extends Construct {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
+    this.siteBucket = siteBucket;
 
     // TLS certificate
     const acmCertificate = new acm.DnsValidatedCertificate(this, 'TlsCertificate', {
@@ -103,6 +109,7 @@ export class StaticSite extends Construct {
       cfnDistribution.overrideLogicalId(props.distributionLogicalId);
     }
     new cdk.CfnOutput(this, 'DistributionId', { value: distribution.distributionId });
+    this.distribution = distribution;
 
     // DNS records (for the base domain and aliases)
     const recordTarget = route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution));
