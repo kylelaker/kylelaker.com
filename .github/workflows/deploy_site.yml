@@ -1,6 +1,8 @@
 ---
 name: Deploy to S3
 
+concurrency: site-deploy-s3
+
 on:
   push:
     branches:
