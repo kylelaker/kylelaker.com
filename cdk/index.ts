@@ -16,7 +16,7 @@ class StaticSiteStack extends cdk.Stack {
     });
 
     const githubProvider = new iam.OpenIdConnectProvider(this, 'GithubOidcKylelakerCom', {
-      url: "https://vstoken.actions.githubusercontent.com",
+      url: "https://token.actions.githubusercontent.com",
       thumbprints: [
         "a031c46782e6e6c662c2c87c76da9aa62ccabd8e"
       ],
@@ -30,7 +30,7 @@ class StaticSiteStack extends cdk.Stack {
       assumedBy: new iam.OpenIdConnectPrincipal(githubProvider).withConditions({
         StringLike: {
           // Allow deployments only from the main branch of the repository
-          "vstoken.actions.githubusercontent.com:sub": `repo:${props.repoName}:ref:refs/heads/main`
+          "token.actions.githubusercontent.com:sub": `repo:${props.repoName}:ref:refs/heads/main`
         }
       }),
     });
