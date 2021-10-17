@@ -1,0 +1,91 @@
+name: Lint and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint codebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Configure Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+      - name: Configure Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: npm
+          cache-dependency-path: cdk/package-lock.json
+      - name: Install Ruby dependencies
+        run: |
+          bundler install
+      - name: Install NodeJS dependencies
+        run: |
+          npm install
+        working-directory: cdk/
+      - name: Run linter
+        uses: github/super-linter/slim@v4
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_GITLEAKS: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_YAML: true
+  # cdkSynth:
+  #   name: Synthesize CDK App
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #     - name: Configure Node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '16'
+  #         cache: npm
+  #         cache-dependency-path: cdk/package-lock.json
+  #     - name: Install NodeJS dependencies
+  #       run: |
+  #         npm install
+  #       working-directory: cdk/
+  #     - name: Build cdk app
+  #       run: |
+  #         npm run build
+  #       working-directory: cdk/
+  #     - name: Synthesize CDK app
+  #       run: |
+  #         npx cdk synth
+  #     run: |
+  #         npx cdk synth
+  #       working-directory: cdk/
+  jekyllBuild:
+    name: Build Jekyll site
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Configure Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+      - name: Run build
+        run: bundler exec jekyll build
+      - name: Archive artifiacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: site
+          path: _site/*

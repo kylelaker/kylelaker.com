@@ -3,7 +3,7 @@
         "target": "ES2020",
         "module": "commonjs",
         "lib": [
-            "ES2020",
+            "ES2020"
         ],
         "strict": true,
         "noImplicitAny": true,
@@ -17,7 +17,8 @@
         "inlineSourceMap": true,
         "inlineSources": true,
         "experimentalDecorators": true,
-        "strictPropertyInitialization": false
+        "strictPropertyInitialization": false,
+        "outDir": "build"
     },
     "include": [
         "./*.ts"

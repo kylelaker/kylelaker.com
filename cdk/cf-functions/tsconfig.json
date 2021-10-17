@@ -1,23 +1,20 @@
 {
     "compilerOptions": {
         "target": "ES5",
-        "module": "commonjs",
+        "module": "none",
         "lib": ["ES5"],
         "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "noImplicitThis": true,
-        "alwaysStrict": true,
+        "esModuleInterop": true,
         "noUnusedLocals": false,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": false,
+        "noFallthroughCasesInSwitch": true,
         "experimentalDecorators": true,
-        "strictPropertyInitialization": false,
         "typeRoots": ["../node_modules/@types/", "types/"],
         "types": ["aws-cloudfront-function"],
+        "outDir": "build"
     },
     "include": [
         "./*.ts"
-    ],
+    ]
 }
