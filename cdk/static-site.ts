@@ -1,15 +1,14 @@
-import * as cdk from '@aws-cdk/core';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as targets from '@aws-cdk/aws-route53-targets';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { Construct, RemovalPolicy, Stack } from '@aws-cdk/core';
+import * as cdk from "@aws-cdk/core";
+import * as route53 from "@aws-cdk/aws-route53";
+import * as s3 from "@aws-cdk/aws-s3";
+import * as acm from "@aws-cdk/aws-certificatemanager";
+import * as targets from "@aws-cdk/aws-route53-targets";
+import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import * as origins from "@aws-cdk/aws-cloudfront-origins";
 
 export interface StaticSiteProps {
-    domainName: string;
-    distributionLogicalId?: string;
+  domainName: string;
+  distributionLogicalId?: string;
 }
 
 function aliasResourceName(alias: string): string {
@@ -23,47 +22,49 @@ function aliasResourceName(alias: string): string {
  * The site redirects from HTTP to HTTPS, using a CloudFront distribution,
  * Route53 alias record, and ACM certificate.
  */
-export class StaticSite extends Construct {
+export class StaticSite extends cdk.Construct {
   public readonly domainName: string;
   public readonly siteBucket: s3.IBucket;
   public readonly distribution: cloudfront.IDistribution;
 
-  constructor(parent: Stack, name: string, props: StaticSiteProps) {
+  constructor(parent: cdk.Stack, name: string, props: StaticSiteProps) {
     super(parent, name);
 
-    const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
+    const zone = route53.HostedZone.fromLookup(this, "Zone", { domainName: props.domainName });
     const siteDomain = props.domainName;
     this.domainName = siteDomain;
     const aliases = [`www.${siteDomain}`];
-    new cdk.CfnOutput(this, 'Site', { value: `https://${siteDomain}` });
+    new cdk.CfnOutput(this, "Site", { value: `https://${siteDomain}` });
 
     // Content bucket
-    const siteBucket = new s3.Bucket(this, 'SiteBucket', {
+    const siteBucket = new s3.Bucket(this, "SiteBucket", {
       bucketName: siteDomain,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
-    new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
+    new cdk.CfnOutput(this, "Bucket", { value: siteBucket.bucketName });
     this.siteBucket = siteBucket;
 
     // TLS certificate
-    const acmCertificate = new acm.DnsValidatedCertificate(this, 'TlsCertificate', {
+    const acmCertificate = new acm.DnsValidatedCertificate(this, "TlsCertificate", {
       domainName: siteDomain,
       subjectAlternativeNames: aliases,
       hostedZone: zone,
-      region: 'us-east-1', // Cloudfront only checks this region for certificates.
+      region: "us-east-1", // Cloudfront only checks this region for certificates.
     });
-    new cdk.CfnOutput(this, 'Certificate', { value: acmCertificate.certificateArn });
+    new cdk.CfnOutput(this, "Certificate", { value: acmCertificate.certificateArn });
 
-    const viewerRequestFunction = new cloudfront.Function(this, 'ViewerRequestFunction', {
-      code: cloudfront.FunctionCode.fromFile({ filePath: 'cf-functions/viewer-request.js' }),
+    const viewerRequestFunction = new cloudfront.Function(this, "ViewerRequestFunction", {
+      code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/build/viewer-request.js" }),
+      comment: "Handles URL rewrites",
     });
 
     const viewerResponseFunction = new cloudfront.Function(this, "ViewerResponseFunction", {
-      code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/viewer-response.js" })
-    })
+      code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/build/viewer-response.js" }),
+      comment: "Sets response headers",
+    });
 
     // CloudFront distribution
-    const distribution = new cloudfront.Distribution(this, 'Distribution', {
+    const distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultBehavior: {
         origin: new origins.S3Origin(siteBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -75,21 +76,21 @@ export class StaticSite extends Construct {
           {
             function: viewerResponseFunction,
             eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
-          }
+          },
         ],
       },
       errorResponses: [
         {
           httpStatus: 404,
-          responsePagePath: '/404.html',
+          responsePagePath: "/404.html",
         },
         {
           httpStatus: 403,
           responseHttpStatus: 404,
-          responsePagePath: '/404.html',
+          responsePagePath: "/404.html",
         },
       ],
-      defaultRootObject: 'index.html',
+      defaultRootObject: "index.html",
       domainNames: [siteDomain, ...aliases],
       certificate: acmCertificate,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
@@ -108,7 +109,7 @@ export class StaticSite extends Construct {
       const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
       cfnDistribution.overrideLogicalId(props.distributionLogicalId);
     }
-    new cdk.CfnOutput(this, 'DistributionId', { value: distribution.distributionId });
+    new cdk.CfnOutput(this, "DistributionId", { value: distribution.distributionId });
     this.distribution = distribution;
 
     // DNS records (for the base domain and aliases)
@@ -131,9 +132,9 @@ export class StaticSite extends Construct {
       // the new ones. Then at the end, without forcing the retain, it just goes and deletes
       // the same records it just created.
       const aliasv4Cfn = aliasv4.node.defaultChild as route53.CfnRecordSet;
-      aliasv4Cfn.applyRemovalPolicy(RemovalPolicy.RETAIN);
+      aliasv4Cfn.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
       const aliasv6Cfn = aliasv6.node.defaultChild as route53.CfnRecordSet;
-      aliasv6Cfn.applyRemovalPolicy(RemovalPolicy.RETAIN);
+      aliasv6Cfn.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
     });
   }
 }

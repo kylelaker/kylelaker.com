@@ -1,15 +1,16 @@
+// @ts-expect-error The name handler must be used for all files
 function handler(event: AWSCloudFrontFunction.Event): AWSCloudFrontFunction.Request {
-    var request = event.request;
-    var uri = request.uri;
+  const request = event.request;
+  const uri = request.uri;
 
-    // Check whether the URI is missing a file name.
-    if (uri.endsWith('/')) {
-        request.uri += 'index.html';
-    }
-    // Check whether the URI is missing a file extension.
-    else if (!uri.includes('.')) {
-        request.uri += '/index.html';
-    }
+  // Check whether the URI is missing a file name.
+  if (uri.endsWith("/")) {
+    request.uri += "index.html";
+  }
+  // Check whether the URI is missing a file extension.
+  else if (!uri.includes(".")) {
+    request.uri += "/index.html";
+  }
 
-    return request;
+  return request;
 }
