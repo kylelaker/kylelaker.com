@@ -21,7 +21,7 @@ class StaticSiteStack extends cdk.Stack {
         "a031c46782e6e6c662c2c87c76da9aa62ccabd8e"
       ],
       clientIds: [
-        `https://github.com/${props.repoName}`
+        `sts.amazonaws.com`
       ]
     });
     const githubRole = new iam.Role(this, 'GitHubOidcDeploy', {
