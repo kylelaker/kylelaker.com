@@ -41,18 +41,11 @@ jobs:
       - run: echo ::add-mask::${{ secrets.AWS_ACCOUNT_ID }}
       - run: sleep 5
       - name: Configure AWS credentials
-        run: |
-          AWS_ROLE_ARN=arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubKyleLakerComDeploy
-          AWS_WEB_IDENTITY_TOKEN_FILE=/tmp/awscreds
-          AWS_DEFAULT_REGION=us-east-1
-
-          cat << EOF >> $GITHUB_ENV
-          AWS_ROLE_ARN=$AWS_ROLE_ARN
-          AWS_WEB_IDENTITY_TOKEN_FILE=$AWS_WEB_IDENTITY_TOKEN_FILE
-          AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
-          EOF
-
-          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com" | jq -r '.value' > "$AWS_WEB_IDENTITY_TOKEN_FILE"
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubKyleLakerComDeploy
+          role-session-name: Deployment${{ github.run_id }}-${{ github.run_attempt }}
       - name: Download site artifact
         id: download
         uses: actions/download-artifact@v2

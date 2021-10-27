@@ -34,7 +34,7 @@ class StaticSiteStack extends cdk.Stack {
       document: new iam.PolicyDocument({
         statements: [
           new iam.PolicyStatement({
-            sid: "S3ReadWrite",
+            sid: "S3CliSync",
             effect: iam.Effect.ALLOW,
             actions: ["s3:PutObject", "s3:ListBucket", "s3:DeleteObject", "s3:GetObject"],
             resources: [site.siteBucket.bucketArn, site.siteBucket.arnForObjects("*")],

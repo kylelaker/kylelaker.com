@@ -31,14 +31,14 @@
         "typescript": "^4.4"
     },
     "dependencies": {
-        "@aws-cdk/aws-certificatemanager": "1.128.0",
-        "@aws-cdk/aws-cloudfront": "1.128.0",
-        "@aws-cdk/aws-cloudfront-origins": "1.128.0",
-        "@aws-cdk/aws-iam": "1.128.0",
-        "@aws-cdk/aws-route53": "1.128.0",
-        "@aws-cdk/aws-route53-targets": "1.128.0",
-        "@aws-cdk/aws-s3": "1.128.0",
-        "@aws-cdk/core": "1.128.0",
-        "aws-cdk": "1.128.0"
+        "@aws-cdk/aws-certificatemanager": "1.129.0",
+        "@aws-cdk/aws-cloudfront": "1.129.0",
+        "@aws-cdk/aws-cloudfront-origins": "1.129.0",
+        "@aws-cdk/aws-iam": "1.129.0",
+        "@aws-cdk/aws-route53": "1.129.0",
+        "@aws-cdk/aws-route53-targets": "1.129.0",
+        "@aws-cdk/aws-s3": "1.129.0",
+        "@aws-cdk/core": "1.129.0",
+        "aws-cdk": "1.129.0"
     }
 }
