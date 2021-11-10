@@ -1,13 +1,13 @@
-import * as cdk from "@aws-cdk/core";
-import * as iam from "@aws-cdk/aws-iam";
+import { App, Stack, StackProps } from "aws-cdk-lib";
+import { aws_iam as iam } from "aws-cdk-lib";
 import { StaticSite } from "./static-site";
 
-interface StaticSiteProps extends cdk.StackProps {
+interface StaticSiteProps extends StackProps {
   repoName: string;
 }
 
-class StaticSiteStack extends cdk.Stack {
-  constructor(parent: cdk.App, name: string, props: StaticSiteProps) {
+class StaticSiteStack extends Stack {
+  constructor(parent: App, name: string, props: StaticSiteProps) {
     super(parent, name, props);
 
     const site = new StaticSite(this, "StaticSite", {
@@ -46,7 +46,7 @@ class StaticSiteStack extends cdk.Stack {
   }
 }
 
-const app = new cdk.App();
+const app = new App();
 
 new StaticSiteStack(app, "BuildStaticSite", {
   repoName: "kylelaker/kylelaker.com",

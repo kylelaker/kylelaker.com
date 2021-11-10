@@ -1,10 +1,13 @@
-import * as cdk from "@aws-cdk/core";
-import * as route53 from "@aws-cdk/aws-route53";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as acm from "@aws-cdk/aws-certificatemanager";
-import * as targets from "@aws-cdk/aws-route53-targets";
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as origins from "@aws-cdk/aws-cloudfront-origins";
+import { CfnOutput, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import {
+  aws_route53 as route53,
+  aws_s3 as s3,
+  aws_certificatemanager as acm,
+  aws_route53_targets as targets,
+  aws_cloudfront as cloudfront,
+  aws_cloudfront_origins as origins,
+} from "aws-cdk-lib";
 
 export interface StaticSiteProps {
   domainName: string;
@@ -22,26 +25,26 @@ function aliasResourceName(alias: string): string {
  * The site redirects from HTTP to HTTPS, using a CloudFront distribution,
  * Route53 alias record, and ACM certificate.
  */
-export class StaticSite extends cdk.Construct {
+export class StaticSite extends Construct {
   public readonly domainName: string;
   public readonly siteBucket: s3.IBucket;
   public readonly distribution: cloudfront.IDistribution;
 
-  constructor(parent: cdk.Stack, name: string, props: StaticSiteProps) {
+  constructor(parent: Stack, name: string, props: StaticSiteProps) {
     super(parent, name);
 
     const zone = route53.HostedZone.fromLookup(this, "Zone", { domainName: props.domainName });
     const siteDomain = props.domainName;
     this.domainName = siteDomain;
     const aliases = [`www.${siteDomain}`];
-    new cdk.CfnOutput(this, "Site", { value: `https://${siteDomain}` });
+    new CfnOutput(this, "Site", { value: `https://${siteDomain}` });
 
     // Content bucket
     const siteBucket = new s3.Bucket(this, "SiteBucket", {
       bucketName: siteDomain,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
-    new cdk.CfnOutput(this, "Bucket", { value: siteBucket.bucketName });
+    new CfnOutput(this, "Bucket", { value: siteBucket.bucketName });
     this.siteBucket = siteBucket;
 
     // TLS certificate
@@ -51,7 +54,7 @@ export class StaticSite extends cdk.Construct {
       hostedZone: zone,
       region: "us-east-1", // Cloudfront only checks this region for certificates.
     });
-    new cdk.CfnOutput(this, "Certificate", { value: acmCertificate.certificateArn });
+    new CfnOutput(this, "Certificate", { value: acmCertificate.certificateArn });
 
     const viewerRequestFunction = new cloudfront.Function(this, "ViewerRequestFunction", {
       code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/build/viewer-request.js" }),
@@ -109,7 +112,7 @@ export class StaticSite extends cdk.Construct {
       const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
       cfnDistribution.overrideLogicalId(props.distributionLogicalId);
     }
-    new cdk.CfnOutput(this, "DistributionId", { value: distribution.distributionId });
+    new CfnOutput(this, "DistributionId", { value: distribution.distributionId });
     this.distribution = distribution;
 
     // DNS records (for the base domain and aliases)
@@ -132,9 +135,9 @@ export class StaticSite extends cdk.Construct {
       // the new ones. Then at the end, without forcing the retain, it just goes and deletes
       // the same records it just created.
       const aliasv4Cfn = aliasv4.node.defaultChild as route53.CfnRecordSet;
-      aliasv4Cfn.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+      aliasv4Cfn.applyRemovalPolicy(RemovalPolicy.RETAIN);
       const aliasv6Cfn = aliasv6.node.defaultChild as route53.CfnRecordSet;
-      aliasv6Cfn.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+      aliasv6Cfn.applyRemovalPolicy(RemovalPolicy.RETAIN);
     });
   }
 }
