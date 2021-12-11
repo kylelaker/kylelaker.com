@@ -1,7 +1,9 @@
-import { CfnOutput, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import {
+  CfnOutput,
   Duration,
+  RemovalPolicy,
+  Stack,
   aws_route53 as route53,
   aws_s3 as s3,
   aws_certificatemanager as acm,
@@ -9,74 +11,17 @@ import {
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as origins,
 } from "aws-cdk-lib";
+import { ContentSecurityPolicy } from "./content-security-policy";
 
 export interface StaticSiteProps {
   domainName: string;
-  reportUri: string;
+  contentSecurityPolicy?: ContentSecurityPolicy;
   distributionLogicalId?: string;
 }
 
 function aliasResourceName(alias: string): string {
   const name = alias.replace(/\.([a-z])/g, (_match: string, p1: string): string => p1.toUpperCase());
   return name.charAt(0).toUpperCase() + name.slice(1);
-}
-
-function buildContentSecurityPolicy(reportUri: string): string {
-  const specialWord = (word: string) => `'${word}'`;
-  const jsdelivr = "https://cdn.jsdelivr.net";
-  const fontawesome = "https://*.fontawesome.com";
-  const policy = [
-    {
-      name: "default-src",
-      values: [specialWord("none")],
-    },
-    {
-      name: "script-src",
-      values: [
-        specialWord("self"),
-        specialWord("unsafe-inline"), // required for Font Awesome
-        jsdelivr,
-        fontawesome,
-      ],
-    },
-    {
-      name: "style-src",
-      values: [
-        specialWord("self"),
-        specialWord("unsafe-inline"), // required for Font Awesome
-        jsdelivr,
-        fontawesome,
-      ],
-    },
-    {
-      name: "img-src",
-      values: [
-        specialWord("self"),
-        fontawesome,
-        "data:", // seems necessary for Font Awesome
-      ],
-    },
-    {
-      name: "font-src",
-      values: [fontawesome],
-    },
-    {
-      name: "connect-src",
-      values: [
-        specialWord("self"), // Reports show issues accessing favicon.ico without this
-        fontawesome,
-      ],
-    },
-    {
-      name: "report-uri",
-      values: [reportUri],
-    },
-  ];
-  const staticValues = ["upgrade-insecure-requests", "block-all-mixed-content"];
-  return policy
-    .map((policy) => `${policy.name} ${policy.values.join(" ")}`)
-    .concat(staticValues)
-    .join("; ");
 }
 
 /**
@@ -123,10 +68,14 @@ export class StaticSite extends Construct {
 
     const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, "ResponseHeadersPolicy", {
       securityHeadersBehavior: {
-        contentSecurityPolicy: {
-          contentSecurityPolicy: buildContentSecurityPolicy(props.reportUri),
-          override: true,
-        },
+        ...(
+          props.contentSecurityPolicy ? {
+            contentSecurityPolicy: {
+              contentSecurityPolicy: props.contentSecurityPolicy.value,
+              override: true,
+            },
+          } : {}
+        ),
         contentTypeOptions: {
           override: true,
         },

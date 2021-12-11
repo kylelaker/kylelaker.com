@@ -1,5 +1,6 @@
 import { App, Stack, StackProps } from "aws-cdk-lib";
 import { aws_iam as iam } from "aws-cdk-lib";
+import { ContentSecurityPolicy, CspValue } from "./content-security-policy";
 import { StaticSite } from "./static-site";
 
 interface StaticSiteProps extends StackProps {
@@ -10,10 +11,25 @@ class StaticSiteStack extends Stack {
   constructor(parent: App, name: string, props: StaticSiteProps) {
     super(parent, name, props);
 
+    const jsdelivr = CspValue.host("https://cdn.jsdelivr.net");
+    const fontawesome = CspValue.host("https://*.fontawesome.com");
+
+    const csp = new ContentSecurityPolicy({
+      defaultSrc: [CspValue.NONE],
+      scriptSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr, fontawesome],
+      styleSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr, fontawesome],
+      imgSrc: [CspValue.SELF, CspValue.DATA, fontawesome],
+      fontSrc: [fontawesome],
+      connectSrc: [CspValue.SELF, fontawesome],
+      reportUri: this.node.tryGetContext("reportUri"),
+      upgradeInsecureRequests: true,
+      blockAllMixedContent: true,
+    });
+
     const site = new StaticSite(this, "StaticSite", {
       domainName: this.node.tryGetContext("domain"),
-      reportUri: this.node.tryGetContext("reportUri"),
       distributionLogicalId: this.node.tryGetContext("distributionLogicalId"),
+      contentSecurityPolicy: csp,
     });
 
     const githubProvider = new iam.OpenIdConnectProvider(this, "GithubOidcKylelakerCom", {
