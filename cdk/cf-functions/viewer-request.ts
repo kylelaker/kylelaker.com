@@ -1,4 +1,3 @@
-// @ts-expect-error The name handler must be used for all files
 function handler(event: AWSCloudFrontFunction.Event): AWSCloudFrontFunction.Request {
   const request = event.request;
   const uri = request.uri;

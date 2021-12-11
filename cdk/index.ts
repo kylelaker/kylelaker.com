@@ -12,6 +12,7 @@ class StaticSiteStack extends Stack {
 
     const site = new StaticSite(this, "StaticSite", {
       domainName: this.node.tryGetContext("domain"),
+      reportUri: this.node.tryGetContext("reportUri"),
       distributionLogicalId: this.node.tryGetContext("distributionLogicalId"),
     });
 

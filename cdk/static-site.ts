@@ -1,6 +1,7 @@
 import { CfnOutput, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import {
+  Duration,
   aws_route53 as route53,
   aws_s3 as s3,
   aws_certificatemanager as acm,
@@ -11,12 +12,71 @@ import {
 
 export interface StaticSiteProps {
   domainName: string;
+  reportUri: string;
   distributionLogicalId?: string;
 }
 
 function aliasResourceName(alias: string): string {
   const name = alias.replace(/\.([a-z])/g, (_match: string, p1: string): string => p1.toUpperCase());
   return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function buildContentSecurityPolicy(reportUri: string): string {
+  const specialWord = (word: string) => `'${word}'`;
+  const jsdelivr = "https://cdn.jsdelivr.net";
+  const fontawesome = "https://*.fontawesome.com";
+  const policy = [
+    {
+      name: "default-src",
+      values: [specialWord("none")],
+    },
+    {
+      name: "script-src",
+      values: [
+        specialWord("self"),
+        specialWord("unsafe-inline"), // required for Font Awesome
+        jsdelivr,
+        fontawesome,
+      ],
+    },
+    {
+      name: "style-src",
+      values: [
+        specialWord("self"),
+        specialWord("unsafe-inline"), // required for Font Awesome
+        jsdelivr,
+        fontawesome,
+      ],
+    },
+    {
+      name: "img-src",
+      values: [
+        specialWord("self"),
+        fontawesome,
+        "data:", // seems necessary for Font Awesome
+      ],
+    },
+    {
+      name: "font-src",
+      values: [fontawesome],
+    },
+    {
+      name: "connect-src",
+      values: [
+        specialWord("self"), // Reports show issues accessing favicon.ico without this
+        fontawesome,
+      ],
+    },
+    {
+      name: "report-uri",
+      values: [reportUri],
+    },
+  ];
+  const staticValues = ["upgrade-insecure-requests", "block-all-mixed-content"];
+  return policy
+    .map((policy) => `${policy.name} ${policy.values.join(" ")}`)
+    .concat(staticValues)
+    .join("; ");
 }
 
 /**
@@ -61,9 +121,35 @@ export class StaticSite extends Construct {
       comment: "Handles URL rewrites",
     });
 
-    const viewerResponseFunction = new cloudfront.Function(this, "ViewerResponseFunction", {
-      code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/build/viewer-response.js" }),
-      comment: "Sets response headers",
+    const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, "ResponseHeadersPolicy", {
+      securityHeadersBehavior: {
+        contentSecurityPolicy: {
+          contentSecurityPolicy: buildContentSecurityPolicy(props.reportUri),
+          override: true,
+        },
+        contentTypeOptions: {
+          override: true,
+        },
+        frameOptions: {
+          frameOption: cloudfront.HeadersFrameOption.DENY,
+          override: true,
+        },
+        referrerPolicy: {
+          referrerPolicy: cloudfront.HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
+          override: true,
+        },
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.days(730),
+          includeSubdomains: true,
+          preload: true,
+          override: true,
+        },
+        xssProtection: {
+          modeBlock: true,
+          protection: true,
+          override: true,
+        }
+      }
     });
 
     // CloudFront distribution
@@ -71,14 +157,11 @@ export class StaticSite extends Construct {
       defaultBehavior: {
         origin: new origins.S3Origin(siteBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        responseHeadersPolicy: responseHeadersPolicy,
         functionAssociations: [
           {
             function: viewerRequestFunction,
             eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
-          },
-          {
-            function: viewerResponseFunction,
-            eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
           },
         ],
       },
