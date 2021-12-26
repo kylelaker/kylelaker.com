@@ -1,5 +1,4 @@
-import { App, Stack, StackProps } from "aws-cdk-lib";
-import { aws_iam as iam } from "aws-cdk-lib";
+import { App, Stack, StackProps, aws_iam as iam } from "aws-cdk-lib";
 import { ContentSecurityPolicy, CspValue } from "./content-security-policy";
 import { StaticSite } from "./static-site";
 
