@@ -20,8 +20,5 @@
         "strictPropertyInitialization": false,
         "outDir": "build"
     },
-    "include": [
-        "./*.ts"
-    ],
     "exclude": ["node_modules/**", "cf-functions/**"]
 }

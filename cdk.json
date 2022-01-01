@@ -1,0 +1,6 @@
+{
+    "app": "npx ts-node --prefer-ts-exts cdk/bin/kylelaker-com.ts",
+    "context": {
+        "kylelaker/site:domainName": "kylelaker.com",
+    }
+}

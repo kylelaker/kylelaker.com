@@ -3,3 +3,7 @@ _site
 .jekyll-metadata
 .jekyll-cache/
 node_modules/
+node_modules/
+cdk.out/
+build/
+cdk.context.json

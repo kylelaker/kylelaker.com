@@ -12,11 +12,13 @@ import {
   aws_cloudfront_origins as origins,
 } from "aws-cdk-lib";
 import { ContentSecurityPolicy } from "./content-security-policy";
+import { IHostedZone } from "aws-cdk-lib/aws-route53";
+import path = require("path/posix");
 
 export interface StaticSiteProps {
   domainName: string;
+  hostedZone: IHostedZone;
   contentSecurityPolicy?: ContentSecurityPolicy;
-  distributionLogicalId?: string;
 }
 
 function aliasResourceName(alias: string): string {
@@ -38,10 +40,11 @@ export class StaticSite extends Construct {
   constructor(parent: Stack, name: string, props: StaticSiteProps) {
     super(parent, name);
 
-    const zone = route53.HostedZone.fromLookup(this, "Zone", { domainName: props.domainName });
+    const zone = props.hostedZone;
     const siteDomain = props.domainName;
     this.domainName = siteDomain;
     const aliases = [`www.${siteDomain}`];
+    // eslint-disable-next-line no-new
     new CfnOutput(this, "Site", { value: `https://${siteDomain}` });
 
     // Content bucket
@@ -49,6 +52,7 @@ export class StaticSite extends Construct {
       bucketName: siteDomain,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
+    // eslint-disable-next-line no-new
     new CfnOutput(this, "Bucket", { value: siteBucket.bucketName });
     this.siteBucket = siteBucket;
 
@@ -59,23 +63,26 @@ export class StaticSite extends Construct {
       hostedZone: zone,
       region: "us-east-1", // Cloudfront only checks this region for certificates.
     });
+    // eslint-disable-next-line no-new
     new CfnOutput(this, "Certificate", { value: acmCertificate.certificateArn });
 
     const viewerRequestFunction = new cloudfront.Function(this, "ViewerRequestFunction", {
-      code: cloudfront.FunctionCode.fromFile({ filePath: "cf-functions/build/viewer-request.js" }),
+      code: cloudfront.FunctionCode.fromFile({
+        filePath: path.join(__dirname, "..", "cf-functions", "build", "viewer-request.js"),
+      }),
       comment: "Handles URL rewrites",
     });
 
     const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, "ResponseHeadersPolicy", {
       securityHeadersBehavior: {
-        ...(
-          props.contentSecurityPolicy ? {
-            contentSecurityPolicy: {
-              contentSecurityPolicy: props.contentSecurityPolicy.value,
-              override: true,
-            },
-          } : {}
-        ),
+        ...(props.contentSecurityPolicy
+          ? {
+              contentSecurityPolicy: {
+                contentSecurityPolicy: props.contentSecurityPolicy.value,
+                override: true,
+              },
+            }
+          : {}),
         contentTypeOptions: {
           override: true,
         },
@@ -97,12 +104,12 @@ export class StaticSite extends Construct {
           modeBlock: true,
           protection: true,
           override: true,
-        }
-      }
+        },
+      },
     });
 
     // CloudFront distribution
-    const distribution = new cloudfront.Distribution(this, "Distribution", {
+    this.distribution = new cloudfront.Distribution(this, "Distribution", {
       defaultBehavior: {
         origin: new origins.S3Origin(siteBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -131,24 +138,11 @@ export class StaticSite extends Construct {
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
     });
-    // This is going to need to be a wonky bit of code that exists, possibly forever,
-    // (where forever is defined as "time until I can delete & rebuild the stack")
-    // as the switch to cloudfront.Distribution from cloudfront.CloudFrontDistribution
-    // results in a changed logical ID (which of course results in resource replacement).
-    // Since creation happens before deletion during replacement and the same domain names
-    // are being used (and CloudFormation gets really grumpy about that), there isn't a
-    // particularly clean way to walk this over without just carrying forward the old logical ID.
-    // Unfortunately, not only is this ugly but it makes some other resource logical IDs
-    // ugly as well.
-    if (props.distributionLogicalId) {
-      const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
-      cfnDistribution.overrideLogicalId(props.distributionLogicalId);
-    }
-    new CfnOutput(this, "DistributionId", { value: distribution.distributionId });
-    this.distribution = distribution;
+    // eslint-disable-next-line no-new
+    new CfnOutput(this, "DistributionId", { value: this.distribution.distributionId });
 
     // DNS records (for the base domain and aliases)
-    const recordTarget = route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution));
+    const recordTarget = route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(this.distribution));
     [siteDomain, ...aliases].forEach((alias) => {
       const aliasResourceSuffix = aliasResourceName(alias);
       const aliasv4 = new route53.ARecord(this, `AliasRecord${aliasResourceSuffix}`, {
