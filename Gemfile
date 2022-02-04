@@ -17,4 +17,4 @@ group :jekyll_plugins do
 end
 
 
-gem "rouge", "~> 3.27"
+gem "rouge", "~> 3.28"
