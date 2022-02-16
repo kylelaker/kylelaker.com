@@ -2,7 +2,7 @@
   link: /
 - name: Projects
   link: /projects/
-- name: About
-  link: /about/
-- name: Resume
-  link: /resume/
+# - name: About
+#   link: /about/
+# - name: Resume
+#   link: /resume/

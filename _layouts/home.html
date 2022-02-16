@@ -28,7 +28,11 @@ layout: default
             {%- for post in posts -%}
             <li>
             <span class="text-muted">{{ post.date | date: date_format }}</span>
+            {%- if page.title -%}
             <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+            {%- else -%}
+            <h2 class="h3"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
+            {%- endif -%}
             {{ post.excerpt }}
             </li>
             {%- endfor -%}

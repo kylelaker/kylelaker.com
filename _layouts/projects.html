@@ -1,0 +1,21 @@
+---
+layout: page
+---
+
+{{ content }}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for project in page.projects %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="h3 card-title">{{ project.title }}</h3>
+                    <p class="card-text"> {{ project.description | markdownify }}</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" href="{{ project.link }}" target="_blank">View on <i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+</div>

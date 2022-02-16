@@ -18,16 +18,16 @@
       </div>
       <ul class="nav navbar-nav navbar-right">
         {% if site.email -%}
-        <li><a href="mailto:{{ site.email }}" class="nav-item nav-link"><i class="fal fa-envelope"></i></a></li>
+        <li><a href="mailto:{{ site.email }}" class="nav-item nav-link" title="Email me"><i class="fal fa-envelope"></i></a></li>
         {% endif -%}
-        {%- if site.twitter -%}
-        <li><a href="https://twitter.com/{{ site.twitter.username }}" class="nav-item nav-link"><i class="fab fa-twitter"></i></a></li>
+        {%- if site.twitter.username -%}
+        <li><a href="https://twitter.com/{{ site.twitter.username }}" class="nav-item nav-link" title="Follow me on Twitter" target="_blank"><i class="fab fa-twitter"></i></a></li>
         {% endif -%}
         {%- if site.github -%}
-        <li><a href="https://github.com/{{ site.github }}" class="nav-item nav-link"><i class="fab fa-github"></i></a></li>
+        <li><a href="https://github.com/{{ site.github }}" class="nav-item nav-link" title="Follow me on GitHub" target="_blank"><i class="fab fa-github"></i></a></li>
         {% endif -%}
         {%- if site.linkedin -%}
-        <li><a href="https://linkedin.com/in/{{ site.linkedin }}" class="nav-item nav-link"><i class="fab fa-linkedin-in"></i></a></li>
+        <li><a href="https://linkedin.com/in/{{ site.linkedin }}" class="nav-item nav-link" title="Connect on LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
         {%- endif %}
       </ul>
     </div>
