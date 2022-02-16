@@ -20,20 +20,20 @@ class StaticSiteStack extends Stack {
       imgSrc: [CspValue.SELF, CspValue.DATA, fontawesome],
       fontSrc: [fontawesome],
       connectSrc: [CspValue.SELF, fontawesome],
-      reportUri: this.node.tryGetContext("reportUri"),
+      reportUri: this.node.tryGetContext("ReportUri"),
       upgradeInsecureRequests: true,
       blockAllMixedContent: true,
     });
 
     const site = new StaticSite(this, "StaticSite", {
-      domainName: this.node.tryGetContext("domain"),
-      distributionLogicalId: this.node.tryGetContext("distributionLogicalId"),
+      domainName: this.node.tryGetContext("DomainName"),
+      distributionLogicalId: this.node.tryGetContext("DistributionLogicalId"),
       contentSecurityPolicy: csp,
     });
 
     const githubProvider = new iam.OpenIdConnectProvider(this, "GithubOidcKylelakerCom", {
       url: "https://token.actions.githubusercontent.com",
-      thumbprints: ["a031c46782e6e6c662c2c87c76da9aa62ccabd8e"],
+      thumbprints: ["6938fd4d98bab03faadb97b34396831e3780aea1"],
       clientIds: ["sts.amazonaws.com"],
     });
     const githubRole = new iam.Role(this, "GitHubOidcDeploy", {
@@ -67,8 +67,8 @@ const app = new App();
 new StaticSiteStack(app, "BuildStaticSite", {
   repoName: "kylelaker/kylelaker.com",
   env: {
-    account: app.node.tryGetContext("accountId"),
-    region: "us-east-1",
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
   },
 });
 
