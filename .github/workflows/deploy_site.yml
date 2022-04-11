@@ -48,7 +48,7 @@ jobs:
           role-session-name: Deployment${{ github.run_id }}-${{ github.run_attempt }}
       - name: Download site artifact
         id: download
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: site
       - name: Upload site
