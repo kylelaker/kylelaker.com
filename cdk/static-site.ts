@@ -68,14 +68,14 @@ export class StaticSite extends Construct {
 
     const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(this, "ResponseHeadersPolicy", {
       securityHeadersBehavior: {
-        ...(
-          props.contentSecurityPolicy ? {
-            contentSecurityPolicy: {
-              contentSecurityPolicy: props.contentSecurityPolicy.value,
-              override: true,
-            },
-          } : {}
-        ),
+        ...(props.contentSecurityPolicy
+          ? {
+              contentSecurityPolicy: {
+                contentSecurityPolicy: props.contentSecurityPolicy.value,
+                override: true,
+              },
+            }
+          : {}),
         contentTypeOptions: {
           override: true,
         },
@@ -97,8 +97,8 @@ export class StaticSite extends Construct {
           modeBlock: true,
           protection: true,
           override: true,
-        }
-      }
+        },
+      },
     });
 
     // CloudFront distribution
@@ -106,7 +106,7 @@ export class StaticSite extends Construct {
       defaultBehavior: {
         origin: new origins.S3Origin(siteBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        responseHeadersPolicy: responseHeadersPolicy,
+        responseHeadersPolicy,
         functionAssociations: [
           {
             function: viewerRequestFunction,
