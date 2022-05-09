@@ -5,7 +5,18 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
+  depReview:
+    name: Check dependencies for vulnerabilities
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Dependency review
+        uses: actions/dependency-review-action@v1
   lint:
     name: Lint codebase
     runs-on: ubuntu-latest
@@ -43,32 +54,6 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_YAML: true
-  # cdkSynth:
-  #   name: Synthesize CDK App
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-  #     - name: Configure Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '16'
-  #         cache: npm
-  #         cache-dependency-path: cdk/package-lock.json
-  #     - name: Install NodeJS dependencies
-  #       run: |
-  #         npm install
-  #       working-directory: cdk/
-  #     - name: Build cdk app
-  #       run: |
-  #         npm run build
-  #       working-directory: cdk/
-  #     - name: Synthesize CDK app
-  #       run: |
-  #         npx cdk synth
-  #     run: |
-  #         npx cdk synth
-  #       working-directory: cdk/
   jekyllBuild:
     name: Build Jekyll site
     runs-on: ubuntu-latest
