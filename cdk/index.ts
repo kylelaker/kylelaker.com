@@ -11,15 +11,14 @@ class StaticSiteStack extends Stack {
     super(parent, name, props);
 
     const jsdelivr = CspValue.host("https://cdn.jsdelivr.net");
-    const fontawesome = CspValue.host("https://*.fontawesome.com");
 
     const csp = new ContentSecurityPolicy({
       defaultSrc: [CspValue.NONE],
-      scriptSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr, fontawesome],
-      styleSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr, fontawesome],
-      imgSrc: [CspValue.SELF, CspValue.DATA, fontawesome],
-      fontSrc: [fontawesome],
-      connectSrc: [CspValue.SELF, fontawesome],
+      scriptSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr],
+      styleSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr],
+      imgSrc: [CspValue.SELF, CspValue.DATA],
+      fontSrc: [jsdelivr],
+      connectSrc: [CspValue.SELF],
       reportUri: this.node.tryGetContext("ReportUri"),
       upgradeInsecureRequests: true,
       blockAllMixedContent: true,
