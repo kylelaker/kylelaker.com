@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Dependency review
-        uses: actions/dependency-review-action@v1
+        uses: actions/dependency-review-action@v2
   lint:
     name: Lint codebase
     runs-on: ubuntu-latest
