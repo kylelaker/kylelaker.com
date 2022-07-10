@@ -4,55 +4,55 @@
 @import "highlight";
 
 .social-icons {
-    font-size: 1em;
+  font-size: 1em;
 }
 
 .blockquote {
-    font-style: italic;
-    font-size: 1em;
-    padding-left: 1.5em;
-    background-color: #efefef;
+  font-style: italic;
+  font-size: 1em;
+  padding-left: 1.5em;
+  background-color: #efefef;
 }
 
 .main-content {
-    padding-bottom: 1em;
+  padding-bottom: 1em;
 }
 
 img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .post-list {
-    list-style-type: none;
-    margin-left: 0;
-    padding: 0;
+  list-style-type: none;
+  margin-left: 0;
+  padding: 0;
 }
 
 .post-list > li {
-    margin-left: 0;
-    margin-bottom: 2em;
+  margin-left: 0;
+  margin-bottom: 2em;
 }
 
 .row {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-    /* Margin bottom by footer height */
-    margin-bottom: 80px;
+  /* Margin bottom by footer height */
+  margin-bottom: 80px;
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 80px;
-    padding: 1em 0;
-    background-color: #f5f5f5;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  padding: 1em 0;
+  background-color: #f5f5f5;
 }

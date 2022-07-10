@@ -1,60 +1,60 @@
 /* RESUME */
 
 @media print {
-    @page {
-        margin: 1in 1in 1in 1in;
-    }
-    .resume-top-header {
-        text-align: center;
-    }
-    .resume-top-header > * > * {
-        margin: 0;
-    }
+  @page {
+    margin: 1in 1in 1in 1in;
+  }
+  .resume-top-header {
+    text-align: center;
+  }
+  .resume-top-header > * > * {
+    margin: 0;
+  }
 }
 
 .resume-header {
-    font-size: 2em;
-    margin-bottom: 0;
+  font-size: 2em;
+  margin-bottom: 0;
 }
 
 .resume-entry {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 .resume-entry > * {
-    margin: 0;
+  margin: 0;
 }
 
 .entry-org {
-    float: left;
+  float: left;
 }
 
 .entry-org > * {
-    display: inline-block;
+  display: inline-block;
 }
 
 .entry-org > .entry-name {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .entry-org > .entry-name::after {
-    content: ",";
-    font-weight: normal;
+  content: ",";
+  font-weight: normal;
 }
 
 .entry-date {
-    float: right;
+  float: right;
 }
 
 .experience > .job-title {
-    font-style: italic;
-    float: left;
+  font-style: italic;
+  float: left;
 }
 
 .skill-section {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 .skill-block {
-    margin: 0;
+  margin: 0;
 }

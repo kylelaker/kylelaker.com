@@ -23,6 +23,9 @@ jobs:
         with:
           ruby-version: 3.0
           bundler-cache: true
+      - name: Install other dependencies
+        run: |
+          npm instal -g typescript@latest
       - name: Run build
         run: bundler exec jekyll build
       - name: Archive artifiacts
