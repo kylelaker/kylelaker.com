@@ -130,6 +130,7 @@ export class StaticSite extends Construct {
       certificate: acmCertificate,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
+      httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
     });
     // This is going to need to be a wonky bit of code that exists, possibly forever,
     // (where forever is defined as "time until I can delete & rebuild the stack")
