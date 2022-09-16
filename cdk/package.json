@@ -33,6 +33,6 @@
     },
     "dependencies": {
         "aws-cdk-lib": "^2.40.0",
-        "constructs": "^10.1.94"
+        "constructs": "^10.1.104"
     }
 }
