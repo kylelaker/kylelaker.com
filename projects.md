@@ -3,11 +3,11 @@ layout: projects
 title: Projects
 permalink: /projects/
 projects:
-  - title: Gas Tracker
-    link: https://github.com/kylelaker/gas-tracker/
+  - title: Route53 Dynamic DNS Client
+    link: https://github.com/kylelaker/dynamic-route53-rs/
     description: >-
-        A Django applicaton for tracking gas purchases and viewing average MPG.
-        Also allows tracking maintenance and other details about vehicles.
+        A client for dynamically updating a Route 53 Resource Record. Includes
+        a systemd timer and service definition to simplify deployment and setup.
   - title: JMU Parking Data Download
     link: https://github.com/kylelaker/aws-jmu-parking/
     description: >-
