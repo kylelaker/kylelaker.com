@@ -17,4 +17,4 @@ group :jekyll_plugins do
     gem 'jekyll-tsc'
 end
 
-gem "rouge", "~> 3.29"
+gem "rouge", "~> 4.0"
