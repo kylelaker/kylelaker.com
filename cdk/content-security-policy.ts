@@ -87,8 +87,11 @@ export class CspValue {
    * Given a value generates the nonce value for a CSP directive.
    *
    * @example
+   *
+   * ```typescript
    * const sampleNonce = CspValue.nonce("foo");
    * console.log(sampleNonce); // nonce-foo
+   * ```
    *
    * @param value The nonce value
    * @returns The properly-formatted nonce value for the CSP directive.

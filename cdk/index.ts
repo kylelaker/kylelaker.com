@@ -26,7 +26,6 @@ class StaticSiteStack extends Stack {
 
     const site = new StaticSite(this, "StaticSite", {
       domainName: this.node.tryGetContext("DomainName"),
-      distributionLogicalId: this.node.tryGetContext("DistributionLogicalId"),
       contentSecurityPolicy: csp,
     });
 
@@ -63,7 +62,7 @@ class StaticSiteStack extends Stack {
 
 const app = new App();
 
-new StaticSiteStack(app, "BuildStaticSite", {
+new StaticSiteStack(app, "static-web-site-kylelaker-com", {
   repoName: "kylelaker/kylelaker.com",
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
