@@ -2,14 +2,21 @@
 layout: post
 title:  "String truncation as a service"
 date:   2020-04-25 12:00:00 -0400
+excerpt: >-
+    Recently I bought a new [Lexmark printer](https://www.lexmark.com/en_us/printer/14449/Lexmark-MC3224dwe).
+    I'm not sure why I decided to subject myself to the torture of being a
+    printer-owner. Maybe it was because the library is closed due to COVID-19 and I
+    have nowhere to print anymore. Maybe it was because I wanted to make an
+    irresponsible purchase. Maybe it was because I felt the world needed a little
+    more suffering in it.
 ---
 
-Recently I bought a new [Lexmark printer](https://www.lexmark.com/en_us/printer/14449/Lexmark-MC3224dwe).
-I'm not sure why I decided to subject myself to the torture of being a
-printer-owner. Maybe it was because the library is closed due to COVID-19 and I
-have nowhere to print anymore. Maybe it was because I wanted to make an
-irresponsible purchase. Maybe it was because I felt the world needed a little
-more suffering in it.
+<div class="alert alert-info" role="alert">
+  At some point since this post was written, Lexmark has actually removed the
+  ability to use the printer as an inefficient string truncation server.
+</div>
+
+{{ page.excerpt }}
 
 I decided that if I was getting a nice printer, I was going to get a good one.
 One with toner instead of ink. One that could make copies. One that had SNMP
@@ -56,6 +63,7 @@ True
 ```
 
 To follow along with building our new string truncation service, you'll need
+
 - A Lexmark MC3224dwe (or any of their other broken models, which may be all of them)
 - Python 3.5+
 
@@ -244,7 +252,7 @@ So once you
 [put it together](https://gist.github.com/kylelaker/336c05e3b0f2f89f915a73e6803aebe6)
 you end up with a script you can execute by running
 
-```
+```bash
 ./server.py --host 0.0.0.0 --port 8025
 ```
 
@@ -272,7 +280,7 @@ have the printer initiate the SMTP connection and the truncated string should be
 in the standard ouput on the console.
 
 For example, if you put "WHY THE HELL DOES LEXMARK TRUNCATE PASSWORDS" into the
-"Device Password" field, you'll see 
+"Device Password" field, you'll see
 
 ![Standard out with the text "WHY THE HELL DOES LEXMARK TRUNC"](/assets/image/lexmark-truncated-string.png)
 
@@ -285,4 +293,4 @@ implementing STARTTLS support really would be the icing on top of the cake for
 taking this just enough past too far. You'll want to be careful doing this too
 much unless you turn off printing reports on the printer. This can be done in
 Settings > E-mail > E-mail Defaults > Admin Controls and flipping
-"Transmission Log" to "Do Not Print Log". 
+"Transmission Log" to "Do Not Print Log".
