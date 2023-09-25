@@ -8,24 +8,12 @@ sitemap: false
 <div>
   <div class="mb-3">
     <label for="input-mock" class="form-label">Text to mock</label>
-    <textarea class="form-control" placeholder="Text to mock" id="input-mock" style="min-height: 5em;"></textarea>
+    <textarea class="form-control mock-field" placeholder="Text to mock" id="input-mock"></textarea>
   </div>
 
-  <div id="mocked-output" style="min-height: 5em; margin-top: 1em;">
+  <div id="mocked-output" class="mock-field">
     <textarea class="form-control-plaintext" id="mocked-text" placeholder="MoCkEd TeXt" readonly></textarea>
   </div>
 </div>
 
 <script src="/assets/js/mock.js"></script>
-<script>
-  let inputBox = document.getElementById('input-mock');
-  let outputDiv = document.getElementById('mocked-output');
-  let outputText = document.getElementById('mocked-text');
-
-  function updateMockedText() {
-    outputText.innerText = mockifyString(inputBox.value);
-  }
-
-  inputBox.onkeydown = updateMockedText;
-  inputBox.onkeyup = updateMockedText;
-</script>

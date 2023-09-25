@@ -26,3 +26,19 @@ function mockifyString(toFlip: string): string {
     return sum + newChar;
   }, "");
 }
+
+(function () {
+  let inputBox = document.getElementById('input-mock') as HTMLInputElement | null;
+  let outputText = document.getElementById('mocked-text') as HTMLInputElement | null;
+
+    function updateMockedText() {
+      if (inputBox && outputText) {
+        outputText.innerText = mockifyString(inputBox.value);
+      }
+    }
+
+  if (inputBox && outputText) {
+    inputBox.onkeydown = updateMockedText;
+    inputBox.onkeyup = updateMockedText;
+  }
+})();

@@ -14,8 +14,8 @@ class StaticSiteStack extends Stack {
 
     const csp = new ContentSecurityPolicy({
       defaultSrc: [CspValue.NONE],
-      scriptSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr],
-      styleSrc: [CspValue.SELF, CspValue.UNSAFE_INLINE, jsdelivr],
+      scriptSrc: [CspValue.SELF, jsdelivr],
+      styleSrc: [CspValue.SELF, jsdelivr],
       imgSrc: [CspValue.SELF, CspValue.DATA],
       fontSrc: [jsdelivr],
       connectSrc: [CspValue.SELF],
