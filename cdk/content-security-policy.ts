@@ -1,3 +1,5 @@
+import { ReportToHeader } from "./report-to-header";
+
 export enum CspShaType {
   SHA256 = "sha256",
   SHA384 = "sha384",
@@ -127,6 +129,7 @@ export interface ContentSecurityPolicyProps {
   styleSrc?: CspValue[];
 
   reportUri?: string;
+  reportTo?: ReportToHeader;
 
   upgradeInsecureRequests?: boolean;
   blockAllMixedContent?: boolean;
@@ -196,6 +199,7 @@ export class ContentSecurityPolicy {
       .map((directive) => `${directive.name} ${directive.values?.join(" ")}`)
       .concat(
         ...(this.#props.reportUri ? [`report-uri ${this.#props.reportUri}`] : []),
+        ...(this.#props.reportTo ? [`report-to ${this.#props.reportTo.groupName}`] : []),
         ...(this.#props.upgradeInsecureRequests ? ["upgrade-insecure-requests"] : []),
         ...(this.#props.blockAllMixedContent ? ["block-all-mixed-content"] : [])
       )

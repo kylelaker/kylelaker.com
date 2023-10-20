@@ -1,6 +1,7 @@
 import { App, Stack, StackProps, aws_iam as iam } from "aws-cdk-lib";
 import { ContentSecurityPolicy, CspValue } from "./content-security-policy";
 import { StaticSite } from "./static-site";
+import { ReportToHeader } from "./report-to-header";
 
 interface StaticSiteProps extends StackProps {
   repoName: string;
@@ -12,6 +13,13 @@ class StaticSiteStack extends Stack {
 
     const jsdelivr = CspValue.host("https://cdn.jsdelivr.net");
 
+    const reportTo = new ReportToHeader({
+      maxAge: 31536000,
+      includeSubdomains: true,
+      group: "default",
+      urls: [this.node.tryGetContext("ReportToUrl")],
+    });
+
     const csp = new ContentSecurityPolicy({
       defaultSrc: [CspValue.NONE],
       scriptSrc: [CspValue.SELF, jsdelivr],
@@ -20,6 +28,7 @@ class StaticSiteStack extends Stack {
       fontSrc: [jsdelivr],
       connectSrc: [CspValue.SELF],
       reportUri: this.node.tryGetContext("ReportUri"),
+      reportTo,
       upgradeInsecureRequests: true,
       blockAllMixedContent: true,
     });
@@ -27,6 +36,8 @@ class StaticSiteStack extends Stack {
     const site = new StaticSite(this, "StaticSite", {
       domainName: this.node.tryGetContext("DomainName"),
       contentSecurityPolicy: csp,
+      reportToHeader: reportTo,
+      enableNetworkErrorLogging: true,
     });
 
     const githubProvider = new iam.OpenIdConnectProvider(this, "GithubOidcKylelakerCom", {

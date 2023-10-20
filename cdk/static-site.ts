@@ -7,10 +7,13 @@ import * as targets from "aws-cdk-lib/aws-route53-targets";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import { ContentSecurityPolicy } from "./content-security-policy";
+import { ReportToHeader } from "./report-to-header";
 
 export interface StaticSiteProps {
   domainName: string;
   contentSecurityPolicy?: ContentSecurityPolicy;
+  reportToHeader: ReportToHeader;
+  enableNetworkErrorLogging?: boolean;
 }
 
 function aliasResourceName(alias: string): string {
@@ -92,6 +95,25 @@ export class StaticSite extends Construct {
           override: true,
         },
       },
+      customHeadersBehavior: {
+        customHeaders: [
+          { header: "Report-To", value: JSON.stringify(props.reportToHeader), override: true },
+          ...(props.enableNetworkErrorLogging
+            ? [
+                {
+                  header: "NEL",
+                  value: JSON.stringify({
+                    report_to: props.reportToHeader.groupName,
+                    max_age: props.reportToHeader.maxAge,
+                    include_subdomains: props.reportToHeader.includeSubdomains,
+                  }),
+                  override: true,
+                },
+              ]
+            : []),
+        ],
+      },
+      removeHeaders: ["Server"],
     });
 
     // CloudFront distribution
