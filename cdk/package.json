@@ -17,7 +17,7 @@
     "license": "Apache-2.0",
     "devDependencies": {
         "@types/aws-cloudfront-function": "^1.0.3",
-        "@types/node": "^20.8.7",
+        "@types/node": "^20.9.4",
         "@typescript-eslint/eslint-plugin": "^6.8.0",
         "@typescript-eslint/parser": "^6.8.0",
         "aws-cdk": "^2.102.0",
